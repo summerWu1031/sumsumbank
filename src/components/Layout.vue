@@ -15,7 +15,7 @@ export default {
 
 <style lang="scss" scoped>
 .wrapper {
-  border: 1px solid red;
+
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -23,7 +23,7 @@ export default {
 
 .content {
   flex-grow: 1;
-  border: 1px solid blue;
+
   overflow: auto;
 }
 </style>
