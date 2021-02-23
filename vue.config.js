@@ -10,7 +10,8 @@ module.exports = {
         .test(/\.svg$/)
         .include.add(dir).end()//包含icons目录
         .use('svg-sprite-loader').loader('svg-sprite-loader').options({extract:false}).end()
-
+        .use('svgo-loader').loader('svgo-loader')
+        .tap(option =>({...option,plugin:[{removeAttrs:{attrs:'fill'}}]}))
     config.plugin('svg-sprite')
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         .use(require('svg-sprite-loader/plugin') , [{plainSprite: true}])

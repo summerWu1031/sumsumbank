@@ -1,6 +1,9 @@
 <template>
   <layout>
     <p>statistics.vue</p>
+    <template v-slot:footer >
+      <Nav />
+    </template>
   </layout>
 </template>
 

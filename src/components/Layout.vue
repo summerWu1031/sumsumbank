@@ -1,21 +1,21 @@
 <template>
   <div class="wrapper">
-    <div class="content">
+    <div class="content" :class="contentClass">
       <slot/>
     </div>
-    <Nav/>
+    <slot name="footer"></slot>
   </div>
 </template>
 
 <script lang="ts">
 export default {
-  name: 'Layout'
+  name: 'Layout',
+  props:['contentClass']
 };
 </script>
 
 <style lang="scss" scoped>
 .wrapper {
-
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -23,7 +23,7 @@ export default {
 
 .content {
   flex-grow: 1;
-
   overflow: auto;
 }
+
 </style>
