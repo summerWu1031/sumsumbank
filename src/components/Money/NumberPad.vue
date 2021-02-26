@@ -13,7 +13,7 @@
       <button @click="inputContent">7</button>
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
-      <button @click="inputContent" class="ok">{{finish}}</button>
+      <button @click="ok" class="ok">{{finish}}</button>
       <button @click="inputContent">.</button>
       <button @click="inputContent">0</button>
       <button @click="remove" class="deleted">
@@ -38,6 +38,8 @@ export default class Type extends Vue{
     if(this.output==='0'){
       if('0123456789'.indexOf(inputContent)>=0){
         this.output=inputContent;
+      }else if(inputContent === '+' || inputContent === '-'){
+        return;
       }else {
         this.output='0'+inputContent;
       }
@@ -48,27 +50,61 @@ export default class Type extends Vue{
       return;
     }
 
-    this.output+=inputContent;
+    if('+'.indexOf(inputContent)>=0) {
+      this.finish = '=';
 
-    if('+'.indexOf(inputContent)>=0){
-      this.finish='=';
-      console.log(this.output);
-      }
-    if('='.indexOf(inputContent)>=0){
-      console.log('x');
-      this.output=this.output.slice(0,-1);
-      console.log(this.output);
-
-      const old = this.output.split('+');
-      console.log(old);
-      let num = 0;
-      for(let i=0; i<old.length; i++){
-        num+=parseInt(old[i]);
-
-      }
-      console.log('num:'+num);
-      return num;
     }
+
+
+
+    // if ( this.output.indexOf('++') >= 0){
+    //   return;
+    // }else {
+    //   this.output+=inputContent;
+    // }
+
+    if('-'.indexOf(inputContent)>=0){
+      this.finish='=';
+    }
+
+
+  }
+
+  ok(e: MouseEvent){
+      this.finish='完成'
+      console.log(this.output);
+
+      const add =this.output.split(/-\d*/)
+      const add1 =add.filter(item=>!(item===''))
+      const add2 =add1.toString().split('+')
+      // console.log(add);
+      // console.log(add1);
+      // console.log(add2);
+      let addTotal = 0;
+      for(let i=0; i<add2.length; i++){
+        addTotal+=parseInt(add2[i]);
+      }
+      console.log(addTotal);
+
+      const minus = this.output.split(/\+\d*/).toString().trim()
+      const minus2 =minus.split('-')
+      const minus3 =minus2.toString().split(',')
+      const minus4 =minus3.filter(item=>!(item===''))
+      const minus5 =minus4.slice(1)
+      // console.log('min:'+minus);
+      // console.log(minus2);
+      // console.log(minus3);
+      // console.log(minus4);
+      // console.log(minus5);
+
+      let minusTotal = 0;
+      for(let i=0; i<minus5.length; i++){
+        minusTotal+=parseInt(minus5[i]);
+      }
+      console.log(minusTotal);
+
+      this.output=(addTotal-minusTotal).toString()
+
 
   }
 
