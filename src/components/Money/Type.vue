@@ -1,17 +1,42 @@
 <template>
   <div class="type">
     <ul class="tab-bar" >
-      <li class="tab-bar-item selected">支出 </li>
-      <li class="tab-bar-item" > 收入</li>
+      <li class="tab-bar-item" :class="type==='-'? 'selected':''" @click="selectedType('-')">支出 </li>
+      <li class="tab-bar-item" :class="type==='+'? 'selected':''" @click="selectedType('+')"> 收入</li>
     </ul>
     <button class="cancel">取消</button>
   </div>
 </template>
 
 <script lang="ts">
-export default {
-name: "type"
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+
+@Component
+export default class Type extends Vue{
+  type = '-'; //"-"表示支出，‘+’表示收入
+  selectedType(type: string){
+    if(type !=='-' && type!=='+'){
+      throw new Error('type is unknown')
+    }
+    this.type=type
+    }
+
 }
+// export default {
+//   name: "type",
+//   data(){
+//     return{
+//       type:'-' //"-"表示支出，‘+’表示收入
+//     }
+//   },
+//   methods:{
+//     selectedType(type){
+//       this.type=type
+//     }
+//   }
+//
+// }
 </script>
 
 <style lang="scss" scoped>

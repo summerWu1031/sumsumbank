@@ -3,7 +3,6 @@
     <Type/>
     <Tags/>
     <Notes/>
-    <Panel/>
     <NumberPad/>
   </layout>
 </template>
@@ -12,11 +11,10 @@
 import Type from '@/components/Money/Type.vue';
 import Tags from '@/components/Money/Tags.vue';
 import Notes from '@/components/Money/Notes.vue';
-import Panel from '@/components/Money/Panel.vue';
 import NumberPad from '@/components/Money/NumberPad.vue';
 export default {
   name:'Money',
-  components: {NumberPad, Panel, Notes, Tags, Type},
+  components: {NumberPad,  Notes, Tags, Type},
 
 };
 </script>
