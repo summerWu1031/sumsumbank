@@ -56,17 +56,11 @@ export default class Type extends Vue{
     }
 
 
-
-    // if ( this.output.indexOf('++') >= 0){
-    //   return;
-    // }else {
-    //   this.output+=inputContent;
-    // }
-
     if('-'.indexOf(inputContent)>=0){
       this.finish='=';
     }
 
+    this.output+=inputContent;
 
   }
 

@@ -1,43 +1,13 @@
 <template>
   <div class="tags">
     <ul class="current">
-      <li>
-        <div class="icon-item">
-          <Icon name="餐饮"/>
+      <li v-for="tag in dataSource" :key="tag" @click="toggle(tag)" >
+        <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
+         <Icon  :name="tag"/>
         </div>
-        <span>餐饮</span>
+        <span>{{tag}}</span>
       </li>
-      <li>
-        <div class="icon-item">
-          <Icon name="娱乐"/>
-        </div>
-        <span>娱乐</span>
-      </li>
-      <li>
-        <div class="icon-item">
-          <Icon name="交通"/>
-        </div>
-        <span>交通</span>
-      </li>
-      <li>
-        <div class="icon-item">
-          <Icon name="fruit"/>
-        </div>
-        <span>水果</span>
-      </li>
-      <li>
-        <div class="icon-item">
-          <Icon name="零食"/>
-        </div>
-        <span>零食</span>
-      </li>
-      <li>
-        <div class="icon-item">
-          <Icon name="购物"/>
-        </div>
-        <span>购物</span>
-      </li>
-      <li>
+      <li @click="create" >
         <div class="icon-item">
           <Icon name="新增"/>
         </div>
@@ -47,9 +17,34 @@
   </div>
 </template>
 
-<script lang="ts">
+<script >
 export default {
-  name: 'Tags'
+  name: 'Tags',
+  props:['dataSource'],
+  data(){
+    return{
+      selectedTag:[]
+    }
+  },
+  methods:{
+    toggle(tag) {
+      const index = this.selectedTag.indexOf(tag);
+      if(this.selectedTag.length===0){
+        this.selectedTag.push(tag)
+      }else {
+        this.selectedTag.splice(index, 1);
+        this.selectedTag.push(tag)
+      }
+    },
+    create(){
+      const name = window.prompt('请输入标签名');
+      if(name===''){
+        window.alert('标签名不能为空')
+      }else if(this.dataSource){
+        this.$emit('update:dataSource',[...this.dataSource,name])
+      }
+    }
+  }
 };
 </script>
 
@@ -78,6 +73,9 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        &.selected{
+          background-color: #FED330;
+        }
         >.icon{
           width: 40px;
           height: 40px;

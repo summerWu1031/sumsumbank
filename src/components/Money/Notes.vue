@@ -1,17 +1,21 @@
 <template>
   <label class="notes" >
-    <div class="notes-icon">
+    <span class="notes-icon">
       <Icon name="备注"/>
-    </div>
+    </span>
     <span class="name">备注：</span>
-    <input type="text" class="beizhu" placeholder="在这里输入备注">
+    <input type="text" class="beizhu" placeholder="在这里输入备注" v-model="value">
   </label>
 </template>
 
 <script lang="ts">
-export default {
-  name: 'Notes'
-};
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+
+@Component
+export default class Notes extends Vue {
+  value=''
+}
 </script>
 
 <style lang="scss" scoped>
