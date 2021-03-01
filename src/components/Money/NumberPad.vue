@@ -66,17 +66,17 @@ export default class Type extends Vue{
   }
 
   ok(e: MouseEvent){
-      this.finish='完成'
+
       // console.log(this.output);
 
       const add =this.output.split(/-\d*/)
       const add1 =add.toString().split(/,\.\d*/)
       const add2 =add1.filter(item=>!(item===''))
       const add3 =add2.toString().split('+')
-    //   console.log('add1:'+ add);
-    //   console.log(add1);
-    //   console.log(add2);
-    // console.log(add3);
+      //   console.log('add1:'+ add);
+      //   console.log(add1);
+      //   console.log(add2);
+      // console.log(add3);
       let addTotal = 0;
       for(let i=0; i<add3.length; i++){
         addTotal+=parseFloat(add3[i]);
@@ -103,7 +103,17 @@ export default class Type extends Vue{
       // console.log(minusTotal);
 
       const amount =this.output=(addTotal-minusTotal).toString()
-      this.$emit('update:value',amount)
+
+
+
+      if(this.finish==='='){
+        this.output=amount
+        this.finish='完成'
+      }else {
+        this.output='0'
+        this.$emit('update:value',amount)
+        this.$emit('submit',amount)
+      }
 
   }
 

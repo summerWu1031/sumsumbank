@@ -10,10 +10,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component,Watch} from 'vue-property-decorator';
+import {Component, Prop, Watch} from 'vue-property-decorator';
 
 @Component
 export default class Notes extends Vue {
+  @Prop() notes!: string
   value='';
   @Watch('value')
   onValueChange(value: string){
