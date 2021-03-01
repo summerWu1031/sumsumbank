@@ -23,7 +23,8 @@ export default {
   props:['dataSource'],
   data(){
     return{
-      selectedTag:[]
+      selectedTag:[],
+      newTags:[]
     }
   },
   methods:{
@@ -35,10 +36,11 @@ export default {
         this.selectedTag.splice(index, 1);
         this.selectedTag.push(tag)
       }
+      this.$emit('update:tags',this.selectedTag)
     },
     create(){
       const name = window.prompt('请输入标签名');
-      if(name===''){
+      if(!name){
         window.alert('标签名不能为空')
       }else if(this.dataSource){
         this.$emit('update:dataSource',[...this.dataSource,name])

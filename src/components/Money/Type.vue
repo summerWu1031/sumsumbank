@@ -1,26 +1,29 @@
 <template>
   <div class="type">
     <ul class="tab-bar" >
-      <li class="tab-bar-item" :class="type==='-'? 'selected':''" @click="selectedType('-')">支出 </li>
-      <li class="tab-bar-item" :class="type==='+'? 'selected':''" @click="selectedType('+')"> 收入</li>
+      <li class="tab-bar-item" :class="type==='-' && 'selected'" @click="selectedType('-')">支出 </li>
+      <li class="tab-bar-item" :class="type==='+' && 'selected'" @click="selectedType('+')"> 收入</li>
     </ul>
-    <button class="cancel">取消</button>
+    <router-link  to="/statistics">
+      <button class="cancel">取消</button>
+    </router-link>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class Type extends Vue{
-  type = '-'; //"-"表示支出，‘+’表示收入
+  @Prop() readonly type!: string
+
   selectedType(type: string){
     if(type !=='-' && type!=='+'){
       throw new Error('type is unknown')
     }
-    this.type=type
-    }
+    this.$emit('update:type',type)
+  }
 
 }
 // export default {
@@ -53,10 +56,11 @@ export default class Type extends Vue{
     >.tab-bar-item{
       padding: 16px 16px 8px 16px;
       font-size: 22px;
+      &.selected{
+        border-bottom: 2px solid #333;
+      }
     }
-    .selected{
-      border-bottom: 2px solid #333;
-    }
+
   }
   .cancel{
     position: absolute;

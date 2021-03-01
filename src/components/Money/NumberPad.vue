@@ -25,11 +25,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class Type extends Vue{
-  output ='0';
+  @Prop() readonly value!: number
+  output =this.value.toString()
   finish = '完成';
   inputContent(e: MouseEvent){
     const input = e.target as HTMLButtonElement;
@@ -46,9 +47,9 @@ export default class Type extends Vue{
       return
     }
 
-    if (this.output.indexOf('.') >= 0 && inputContent === '.') {
-      return;
-    }
+    // if (this.output.indexOf('.') >= 0 && inputContent === '.') {
+    //   return;
+    // }
 
     if('+'.indexOf(inputContent)>=0) {
       this.finish = '=';
@@ -66,39 +67,43 @@ export default class Type extends Vue{
 
   ok(e: MouseEvent){
       this.finish='完成'
-      console.log(this.output);
+      // console.log(this.output);
 
       const add =this.output.split(/-\d*/)
-      const add1 =add.filter(item=>!(item===''))
-      const add2 =add1.toString().split('+')
-      // console.log(add);
-      // console.log(add1);
-      // console.log(add2);
+      const add1 =add.toString().split(/,\.\d*/)
+      const add2 =add1.filter(item=>!(item===''))
+      const add3 =add2.toString().split('+')
+    //   console.log('add1:'+ add);
+    //   console.log(add1);
+    //   console.log(add2);
+    // console.log(add3);
       let addTotal = 0;
-      for(let i=0; i<add2.length; i++){
-        addTotal+=parseInt(add2[i]);
+      for(let i=0; i<add3.length; i++){
+        addTotal+=parseFloat(add3[i]);
       }
-      console.log(addTotal);
+      // console.log(addTotal);
 
-      const minus = this.output.split(/\+\d*/).toString().trim()
-      const minus2 =minus.split('-')
-      const minus3 =minus2.toString().split(',')
-      const minus4 =minus3.filter(item=>!(item===''))
-      const minus5 =minus4.slice(1)
+      const minus = this.output.split(/\+\d*/).toString()
+      const minus2 = minus.split(/,\.\d*/).toString()
+      const minus3 =minus2.split('-')
+      const minus4 =minus3.toString().split(',')
+      const minus5 =minus4.filter(item=>!(item===''))
+      const minus6 =minus5.slice(1)
       // console.log('min:'+minus);
       // console.log(minus2);
       // console.log(minus3);
       // console.log(minus4);
       // console.log(minus5);
+      // console.log(minus6);
 
       let minusTotal = 0;
-      for(let i=0; i<minus5.length; i++){
-        minusTotal+=parseInt(minus5[i]);
+      for(let i=0; i<minus6.length; i++){
+        minusTotal+=parseFloat(minus6[i]);
       }
-      console.log(minusTotal);
+      // console.log(minusTotal);
 
-      this.output=(addTotal-minusTotal).toString()
-
+      const amount =this.output=(addTotal-minusTotal).toString()
+      this.$emit('update:value',amount)
 
   }
 
