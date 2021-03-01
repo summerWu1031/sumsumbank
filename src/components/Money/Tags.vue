@@ -7,6 +7,12 @@
         </div>
         <span>{{tag}}</span>
       </li>
+      <li v-for="tag in newTags" :key="tag" @click="toggle(tag)" >
+        <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
+          {{tag.substring(0,1)}}
+        </div>
+        <span>{{tag}}</span>
+      </li>
       <li @click="create" >
         <div class="icon-item">
           <Icon name="新增"/>
@@ -43,7 +49,7 @@ export default {
       if(!name){
         window.alert('标签名不能为空')
       }else if(this.dataSource){
-        this.$emit('update:dataSource',[...this.dataSource,name])
+        this.newTags.push(name)
       }
     }
   }
@@ -75,6 +81,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        font-size: 24px;
         &.selected{
           background-color: #FED330;
         }
