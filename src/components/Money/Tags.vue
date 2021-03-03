@@ -24,13 +24,14 @@
 </template>
 
 <script >
+const newTags = JSON.parse(window.localStorage.getItem('newTags') || '[]')
 export default {
   name: 'Tags',
-  props:['dataSource'],
+  props:['dataSource','selected'],
   data(){
     return{
-      selectedTag:[],
-      newTags:[]
+      selectedTag:this.selected,
+      newTags:newTags
     }
   },
   methods:{
@@ -51,6 +52,7 @@ export default {
       }else if(this.dataSource){
         this.newTags.push(name)
       }
+      window.localStorage.setItem('newTags', JSON.stringify(this.newTags))
     }
   }
 };

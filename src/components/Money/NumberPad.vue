@@ -32,9 +32,24 @@ export default class Type extends Vue{
   @Prop() readonly value!: number
   output =this.value.toString()
   finish = '完成';
+  xxx: string[]=[];
   inputContent(e: MouseEvent){
     const input = e.target as HTMLButtonElement;
     const inputContent =input.textContent as string;
+    this.xxx.push(inputContent)
+
+    if(this.xxx[this.xxx.length-1]===this.xxx[this.xxx.length-2] &&
+        (this.xxx[this.xxx.length-1]==='+' || this.xxx[this.xxx.length-1]==='-' || this.xxx[this.xxx.length-1]==='.') ){
+      console.log('x');
+      console.log(this.xxx[this.xxx.length-1]);
+      console.log(this.xxx[this.xxx.length-2]);
+      return;
+    }
+    if((this.xxx[this.xxx.length-1]==='+' || this.xxx[this.xxx.length-1]==='-' || this.xxx[this.xxx.length-1]==='.') &&
+        (this.xxx[this.xxx.length-2]==='+' || this.xxx[this.xxx.length-2]==='-' || this.xxx[this.xxx.length-2]==='.')){
+      console.log('x');
+      return;
+    }
     if(this.output.length>16){return;}
     if(this.output==='0'){
       if('0123456789'.indexOf(inputContent)>=0){
@@ -53,7 +68,6 @@ export default class Type extends Vue{
 
     if('+'.indexOf(inputContent)>=0) {
       this.finish = '=';
-
     }
 
 
@@ -109,10 +123,12 @@ export default class Type extends Vue{
       if(this.finish==='='){
         this.output=amount
         this.finish='完成'
-      }else {
+      }else if(!(this.output==='0')){
         this.output='0'
         this.$emit('update:value',amount)
         this.$emit('submit',amount)
+      }else {
+        alert('请输入数值')
       }
 
   }

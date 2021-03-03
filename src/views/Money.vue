@@ -1,8 +1,7 @@
 <template>
   <layout content-class="tagsGrow" >
-    {{recordList}}
     <Type :type.sync="record.type" />
-    <Tags :data-source="tags" @update:tags="onUpdateTags"/>
+    <Tags :data-source="tags" @update:tags="onUpdateTags" :selected="record.tags"/>
     <Notes @update:notes="onUpdateNotes"/>
     <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
   </layout>
@@ -15,22 +14,27 @@ import Tags from '@/components/Money/Tags.vue';
 import Notes from '@/components/Money/Notes.vue';
 import NumberPad from '@/components/Money/NumberPad.vue';
 import {Component, Watch} from 'vue-property-decorator';
+import model from '../../model';
 
-type Record = {
-  tags: string[];
-  notes: string;
-  type: string;
-  amount: number;
-}
+//作为全局类型放到了全局custom.d.ts文件里面了
+// type RecordItem = {
+//   tags: string[];
+//   notes: string;
+//   type: string;
+//   amount: number;
+//   createAt?: Date;
+// }
+
+const recordList = model.fench()
 
 @Component({
   components:{NumberPad,  Notes, Tags, Type}
 })
 export default class Money extends Vue{
   tags=['餐饮','娱乐','交通','水果','零食','购物'];
-  recordList: Record[] =JSON.parse(window.localStorage.getItem('recordList' )|| '[]')
-  record: Record={
-    tags:[],notes:'',type:'-',amount:0
+  recordList: RecordItem[] =recordList
+  record: RecordItem={
+    tags:['餐饮'],notes:'',type:'-',amount:0
    };
    onUpdateNotes(notes: string){
      this.record.notes=notes
@@ -39,12 +43,13 @@ export default class Money extends Vue{
     this.record.tags=tag
   }
   saveRecord(){
-     const record2 =JSON.parse(JSON.stringify(this.record) )
+     const record2 =model.clone(this.record)//深拷贝
+     record2.createAt = new Date()
      this.recordList.push(record2)
   }
   @Watch('recordList')
   onRecordListChange(){
-     window.localStorage.setItem('recordList',JSON.stringify(this.recordList))
+     model.save(this.recordList)
   }
 }
 </script>
