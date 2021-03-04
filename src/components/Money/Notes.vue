@@ -3,22 +3,27 @@
     <span class="notes-icon">
       <Icon name="备注"/>
     </span>
-    <span class="name">备注：</span>
-    <input type="text" class="beizhu" placeholder="在这里输入备注" v-model="value">
+    <span class="name">{{ this.fieldName }}</span>
+    <input type="text" class="beizhu"
+           :value="value"
+           :placeholder="this.placeholder"
+           @input="onValueChange($event.target.value)">
   </label>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Prop, Watch} from 'vue-property-decorator';
+import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class Notes extends Vue {
-  @Prop() notes!: string
-  value='';
-  @Watch('value')
+  @Prop({default:''}) value!: string
+  @Prop() fieldName!: string
+  @Prop() placeholder!: string
+
+  // @Watch('value')
   onValueChange(value: string){
-    this.$emit('update:notes',value)
+    this.$emit('update:xxx',value)
   }
 }
 </script>

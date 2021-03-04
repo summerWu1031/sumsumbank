@@ -1,22 +1,16 @@
 <template>
   <div class="tags">
     <ul class="current">
-      <li v-for="tag in dataSource" :key="tag" @click="toggle(tag)" >
+      <li v-for="tag in dataSource" :key="tag.id" @click="toggle(tag)" >
         <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
-         <Icon  :name="tag"/>
+         <Icon  :name="tag.name"/>
         </div>
-        <span>{{tag}}</span>
+        <span>{{tag.name}}</span>
       </li>
-      <li v-for="tag in newTags" :key="tag" @click="toggle(tag)" >
-        <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
-          {{tag.substring(0,1)}}
-        </div>
-        <span>{{tag}}</span>
-      </li>
-      <li @click="create" >
-        <div class="icon-item">
+      <li >
+        <router-link to="/labels" class="icon-item">
           <Icon name="新增"/>
-        </div>
+        </router-link>
         <span>新增</span>
       </li>
     </ul>
@@ -24,14 +18,13 @@
 </template>
 
 <script >
-const newTags = JSON.parse(window.localStorage.getItem('newTags') || '[]')
+
 export default {
   name: 'Tags',
   props:['dataSource','selected'],
   data(){
     return{
       selectedTag:this.selected,
-      newTags:newTags
     }
   },
   methods:{
@@ -45,15 +38,6 @@ export default {
       }
       this.$emit('update:tags',this.selectedTag)
     },
-    create(){
-      const name = window.prompt('请输入标签名');
-      if(!name){
-        window.alert('标签名不能为空')
-      }else if(this.dataSource){
-        this.newTags.push(name)
-      }
-      window.localStorage.setItem('newTags', JSON.stringify(this.newTags))
-    }
   }
 };
 </script>

@@ -5,21 +5,15 @@
           记账
       </router-link>
 
-
-
       <router-link class="item" active-class="selected" to="/labels">
         <Icon   name="labels"/>
         标签
       </router-link>
 
-
-
       <router-link class="item" active-class="selected" to="/statistics">
         <Icon  name="statistics"/>
         统计
       </router-link>
-
-
   </nav>
 </template>
 
