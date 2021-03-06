@@ -9,19 +9,20 @@
       </div>
     </div>
     <div class="main">
-      <div class="detail">
+      <router-link to="/newlabel" class="detail">
         <span class="add">追加新的标签</span>
-        <span @click="createTag"> > </span>
-      </div>
+        <span > > </span>
+      </router-link>
       <ol>
         <li v-for="tag in tags" :key="tag.id" class="detail">
           <div class="iconWrapper">
-            <Icon :name="tag.name"/>
+            <Icon :name="tag.icon"/>
             <span>{{ tag.name }}</span>
           </div>
-          <router-link :to='`/labels/edit/${tag.id}`'>
-            <Icon name="deleted" @click="remove"/>
-          </router-link>
+          <div :to='`/labels/edit/${tag.id}`'>
+            <Icon name="deleted" @click="remove(tag.id)"/>
+
+          </div>
         </li>
       </ol>
     </div>
@@ -39,6 +40,7 @@ import {Component} from 'vue-property-decorator';
 import tagListModel from '@/models/tagListModel';
 
 tagListModel.fetch()
+
 @Component
 export default class Labels extends Vue{
   tags = tagListModel.data
@@ -55,8 +57,8 @@ export default class Labels extends Vue{
     }
   }
 
-  remove(){
-    tagListModel.remove(this.tag.id)
+  remove(tagId: string){
+    tagListModel.remove(tagId)
   }
 }
 </script>
@@ -105,11 +107,17 @@ export default class Labels extends Vue{
       justify-content: space-between;
       align-items: center;
 
-      > .icon {
+      > .icon-item {
         padding: 5px;
-        margin-right: 5px;
+        margin-right: 10px;
         width: 35px;
         height: 35px;
+        background-color:  #F2F2F2;
+        border-radius:50% 50% 50% 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
       }
     }
 

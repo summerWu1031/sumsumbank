@@ -1,8 +1,7 @@
 <template>
   <layout content-class="tagsGrow" >
-    {{recordList}}
     <Type :type.sync="record.type" />
-    <Tags :data-source="tags" @update:tags="onUpdateTags" :selected="record.tags"/>
+    <Tags :data-source="tags" @update:tags="onUpdateTags" :selected="record.tags" :type="record.type"/>
     <Notes @update:xxx="onUpdateNotes"
       field-name="备注:"
       placeholder="请输入备注"/>
@@ -31,7 +30,7 @@ import tagListModel from '@/models/tagListModel';
 
 const recordList = recordListModel.fench()
 const tabList =  tagListModel.fetch()
-
+console.log(tabList);
 @Component({
   components:{NumberPad,  Notes, Tags, Type}
 })

@@ -1,14 +1,40 @@
 <template>
   <div class="tags">
-    <ul class="current">
+    <ul class="current" v-if="this.type==='-'">
       <li v-for="tag in dataSource" :key="tag.id" @click="toggle(tag)" >
         <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
-         <Icon  :name="tag.name"/>
+         <Icon  :name="tag.icon"/>
         </div>
         <span>{{tag.name}}</span>
       </li>
+      <li v-for="tag in newTags" :key="tag" @click="toggle(tag)" >
+        <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
+          {{tag.substring(0,1)}}
+        </div>
+        <span>{{tag}}</span>
+      </li>
       <li >
-        <router-link to="/labels" class="icon-item">
+        <router-link to="/newlabel" class="icon-item">
+          <Icon name="新增"/>
+        </router-link>
+        <span>新增</span>
+      </li>
+    </ul>
+    <ul class="current" v-else>
+      <li v-for="tag in dataSource" :key="tag.id" @click="toggle(tag)" >
+        <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
+          <Icon  :name="tag.icon"/>
+        </div>
+        <span>{{tag.name}}</span>
+      </li>
+      <li v-for="tag in newTags" :key="tag" @click="toggle(tag)" >
+        <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
+          {{tag.substring(0,1)}}
+        </div>
+        <span>{{tag}}</span>
+      </li>
+      <li >
+        <router-link to="/newlabel" class="icon-item">
           <Icon name="新增"/>
         </router-link>
         <span>新增</span>
@@ -18,13 +44,14 @@
 </template>
 
 <script >
-
+const newTags = JSON.parse(window.localStorage.getItem('newTags') || '[]')
 export default {
   name: 'Tags',
-  props:['dataSource','selected'],
+  props:['dataSource','selected','type'],
   data(){
     return{
       selectedTag:this.selected,
+      newTags:newTags
     }
   },
   methods:{
@@ -38,6 +65,15 @@ export default {
       }
       this.$emit('update:tags',this.selectedTag)
     },
+    create(){
+      const name = window.prompt('请输入标签名');
+      if(!name){
+        window.alert('标签名不能为空')
+      }else if(this.dataSource){
+        this.newTags.push(name)
+      }
+      window.localStorage.setItem('newTags', JSON.stringify(this.newTags))
+    }
   }
 };
 </script>
