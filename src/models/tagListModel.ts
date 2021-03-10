@@ -1,53 +1,75 @@
 import createId from '@/lib/createId';
 
-const localStorageKeyName = 'tagList';
-type Tag = {
-    id: string;
-    name: string;
-    icon: string;
-}
-type tagListModel={
-    data: Tag[];
-    // income: Tag[];
-    fetch: () => Tag[];
-    create: (name: string,icon: string) => 'success' | 'duplicated' ;
-    remove: (id: string) => boolean;
-    save: () => void;
-}
 const tagListModel: tagListModel = {
     data:[],
-    // income:[]
-
+    income:[],
     fetch() {
-        this.data= JSON.parse(window.localStorage.getItem(localStorageKeyName) || '[]');
-        return this.data
+        this.data= JSON.parse(window.localStorage.getItem('payment') || '[]');
+        this.income= JSON.parse(window.localStorage.getItem('income') || '[]');
+        return {
+            payment: this.data,
+            income: this.income
+        }
     },
 
-    create(name,icon){
-
+    create(name,icon,type){
+        if(type==='-'){
             const names = this.data.map(item => item.name)
             const id = createId().toString()
             if(names.indexOf(name)>=0){return 'duplicated'}
             this.data.push({id:id, name:name,icon:icon})
-            this.save()
+            this.save('-')
             return 'success'
-
-
-    },
-    remove(id: string){
-        let index = -1
-        for(let i=0;i<this.data.length;i++){
-            if(this.data[i].id===id){
-                index=i;
-                break
-            }
+        }else if(type==='+'){
+            const names = this.income.map(item => item.name)
+            const id = createId().toString()
+            if(names.indexOf(name)>=0){return 'duplicated'}
+            this.income.push({id:id, name:name,icon:icon})
+            this.save('+')
+            return 'success'
+        }else {
+            return 'failed'
         }
-        this.data.splice(index,1)
-        this.save()
-        return true
+
+
+
     },
-    save() {
-        window.localStorage.setItem(localStorageKeyName, JSON.stringify(this.data));
+    remove(id: string, type: string){
+        if(type==='-'){
+            let payIndex = -1
+            for(let i=0;i<this.data.length;i++){
+                if(this.data[i].id===id){
+                    payIndex=i;
+                    break
+                }
+            }
+            this.data.splice(payIndex,1)
+            this.save('-')
+            return true
+        }else if(type=== '+'){
+            let incomeIndex = -1
+            for(let i=0;i<this.income.length;i++){
+                if(this.income[i].id===id){
+                    incomeIndex=i;
+                    break
+                }
+            }
+            this.income.splice(incomeIndex,1)
+            this.save('+')
+            return true
+        }else {
+            return false
+        }
+
+
+    },
+    save(type) {
+        if(type === '-'){
+            window.localStorage.setItem('payment', JSON.stringify(this.data));
+        }else if(type ==='+'){
+            window.localStorage.setItem('income',JSON.stringify(this.income))
+        }
+
 
     },
 };

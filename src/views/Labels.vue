@@ -13,14 +13,26 @@
         <span class="add">追加新的标签</span>
         <span > > </span>
       </router-link>
-      <ol>
+      <ol v-if="this.type==='-'" >
         <li v-for="tag in tags" :key="tag.id" class="detail">
           <div class="iconWrapper">
-            <Icon :name="tag.icon"/>
+            <Icon :name="tag.icon" class="icon-item"/>
             <span>{{ tag.name }}</span>
           </div>
           <div :to='`/labels/edit/${tag.id}`'>
             <Icon name="deleted" @click="remove(tag.id)"/>
+
+          </div>
+        </li>
+      </ol>
+      <ol v-else >
+        <li v-for="tag in income" :key="tag.id" class="detail">
+          <div class="iconWrapper">
+            <Icon :name="tag.icon" class="icon-item"/>
+            <span>{{ tag.name }}</span>
+          </div>
+          <div :to='`/labels/edit/${tag.id}`'>
+            <Icon name="deleted" @click="remove(tag.id)" />
 
           </div>
         </li>
@@ -37,28 +49,22 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import tagListModel from '@/models/tagListModel';
 
-tagListModel.fetch()
+
+
 
 @Component
 export default class Labels extends Vue{
-  tags = tagListModel.data
-
-  createTag(){
-    const name = window.prompt('请输入标签名')
-    if(name){
-      const message = tagListModel.create(name)
-      if (message === 'duplicated'){
-        window.alert('标签名重复了')
-      }else if(message==='success'){
-        window.alert('添加成功')
-      }
-    }
+  tags = window.tagList.payment
+  income = window.tagList.income
+  type = '-'
+  selectedType(type: string){
+    this.type=type
   }
 
+
   remove(tagId: string){
-    tagListModel.remove(tagId)
+    window.removeTag(tagId,this.type)
   }
 }
 </script>

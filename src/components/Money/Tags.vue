@@ -1,7 +1,7 @@
 <template>
   <div class="tags">
     <ul class="current" v-if="this.type==='-'">
-      <li v-for="tag in dataSource" :key="tag.id" @click="toggle(tag)" >
+      <li v-for="tag in payment" :key="tag.id" @click="toggle(tag)" >
         <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
          <Icon  :name="tag.icon"/>
         </div>
@@ -21,7 +21,7 @@
       </li>
     </ul>
     <ul class="current" v-else>
-      <li v-for="tag in dataSource" :key="tag.id" @click="toggle(tag)" >
+      <li v-for="tag in income" :key="tag.id" @click="toggle(tag)" >
         <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
           <Icon  :name="tag.icon"/>
         </div>
@@ -47,33 +47,24 @@
 const newTags = JSON.parse(window.localStorage.getItem('newTags') || '[]')
 export default {
   name: 'Tags',
-  props:['dataSource','selected','type'],
+  props:['payment','income','selected','type'],
   data(){
     return{
       selectedTag:this.selected,
       newTags:newTags
     }
   },
-  methods:{
+  methods: {
     toggle(tag) {
       const index = this.selectedTag.indexOf(tag);
-      if(this.selectedTag.length===0){
+      if (this.selectedTag.length === 0) {
         this.selectedTag.push(tag)
-      }else {
+      } else {
         this.selectedTag.splice(index, 1);
         this.selectedTag.push(tag)
       }
-      this.$emit('update:tags',this.selectedTag)
+      this.$emit('update:tags', this.selectedTag)
     },
-    create(){
-      const name = window.prompt('请输入标签名');
-      if(!name){
-        window.alert('标签名不能为空')
-      }else if(this.dataSource){
-        this.newTags.push(name)
-      }
-      window.localStorage.setItem('newTags', JSON.stringify(this.newTags))
-    }
   }
 };
 </script>

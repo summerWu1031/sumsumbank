@@ -1,7 +1,8 @@
 <template>
   <layout content-class="tagsGrow" >
+
     <Type :type.sync="record.type" />
-    <Tags :data-source="tags" @update:tags="onUpdateTags" :selected="record.tags" :type="record.type"/>
+    <Tags :payment="payment" :income="income" @update:tags="onUpdateTags" :selected="record.tags" :type="record.type"/>
     <Notes @update:xxx="onUpdateNotes"
       field-name="备注:"
       placeholder="请输入备注"/>
@@ -17,25 +18,19 @@ import Notes from '@/components/Money/Notes.vue';
 import NumberPad from '@/components/Money/NumberPad.vue';
 import {Component, Watch} from 'vue-property-decorator';
 import recordListModel from '../models/recordListModel';
-import tagListModel from '@/models/tagListModel';
 
-//作为全局类型放到了全局custom.d.ts文件里面了
-// type RecordItem = {
-//   tags: string[];
-//   notes: string;
-//   type: string;
-//   amount: number;
-//   createAt?: Date;
-// }
 
-const recordList = recordListModel.fench()
-const tabList =  tagListModel.fetch()
-console.log(tabList);
+
+
+const recordList = recordListModel.fetch()
+
+
 @Component({
   components:{NumberPad,  Notes, Tags, Type}
 })
 export default class Money extends Vue{
-  tags=tabList;
+  payment = window.tagList.payment
+  income = window.tagList.income
   recordList: RecordItem[] =recordList
   record: RecordItem={
     tags:['餐饮'],notes:'',type:'-',amount:0
@@ -47,13 +42,11 @@ export default class Money extends Vue{
     this.record.tags=tag
   }
   saveRecord(){
-     const record2 =recordListModel.clone(this.record)//深拷贝
-     record2.createAt = new Date()
-     this.recordList.push(record2)
+     recordListModel.create(this.record)
   }
   @Watch('recordList')
   onRecordListChange(){
-     recordListModel.save(this.recordList)
+     recordListModel.save()
   }
 }
 </script>

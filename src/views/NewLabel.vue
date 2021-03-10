@@ -1,16 +1,29 @@
 <template>
   <layout>
     <div class="layoutWrapper">
-      <header>
-        <Icon name="回退" @click="goback"/>
-        <div>支出新标签</div>
-      </header>
+      <div class="type">
+        <ul class="tab-bar" >
+          <li class="tab-bar-item" :class="type==='-' && 'selected'" @click="selectedType('-')">支出 </li>
+          <li class="tab-bar-item" :class="type==='+' && 'selected'" @click="selectedType('+')"> 收入</li>
+        </ul>
+        <div>
+          <button class="cancel" @click="goback">取消</button>
+        </div>
+      </div>
+
       <main>
        <Notes field-name="标签：" placeholder="请输入标签名" :value="value" @update:xxx="onUpdateNotes"/>
         <div class="tags">
           <span>图标:</span>
-          <ul class="current">
-            <li v-for="tag in fixIcon" :key="tag" @click="seleted(tag)" >
+          <ul class="current" v-if="this.type==='-'">
+            <li v-for="tag in paymentIcon" :key="tag" @click="selected(tag)" >
+              <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}" >
+                <Icon  :name="tag"/>
+              </div>
+            </li>
+          </ul>
+          <ul class="current" v-else>
+            <li v-for="tag in incomeIcon" :key="tag" @click="selected(tag)" >
               <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}" >
                 <Icon  :name="tag"/>
               </div>
@@ -35,20 +48,21 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Notes from '@/components/Money/Notes.vue';
-import tagListModel from '@/models/tagListModel';
+import Type from '@/components/Money/Type.vue';
 
-tagListModel.fetch()
+
 
 @Component({
-  components: {Notes}
+  components: {Type, Notes}
 })
 export default class NewLabel extends Vue {
-  fixIcon: string[] = ['租房', '礼物', '狗','猫','衣服','化妆品','酒水','药品','水电']
+  paymentIcon: string[] = ['租房', '礼物', '狗','猫','衣服','化妆品','酒水','药品','水电']
+  incomeIcon: string[]=['红包','理财','兼职','工资','钱包','收入']
   selectedTag: string[]=[]
-  tags = tagListModel.data
-  value = ''
 
-  seleted(tag: string) {
+  value = ''
+  type='-';
+  selected(tag: string) {
     const index = this.selectedTag.indexOf(tag);
     if (this.selectedTag.length === 0) {
       this.selectedTag.push(tag)
@@ -64,7 +78,7 @@ export default class NewLabel extends Vue {
       const name =this.value
       const icon = this.selectedTag[0]
       if(name&&icon){
-        const message = tagListModel.create(name,icon)
+        const message = window.createTag(name,icon,this.type)
         if (message === 'duplicated'){
           window.alert('标签名已存在')
         }else if(message==='success'){
@@ -74,7 +88,9 @@ export default class NewLabel extends Vue {
         window.alert('请输入标签名和选择标签图案')
       }
     }
-
+  selectedType(type: string){
+    this.type=type
+  }
   goback(){
     this.$router.back();
   }
@@ -87,23 +103,36 @@ export default class NewLabel extends Vue {
   display: flex;
   flex-direction: column;
 }
-header{
-  height: 50px;
-  background: #f8f8f8;
+.type {
+  background-color: #FED330;
   display: flex;
-  flex-direction: row;
   justify-content: center;
+  text-align: center;
   align-items: center;
-  font-weight: 700;
-  font-size: larger;
   position: relative;
-  >.icon{
-    width: 32px;
-    height: 32px;
+  .cancel {
     position: absolute;
     top: 50%;
-    left: 5px;
-    margin-top: -16px;
+    right: 0;
+    transform: translateY(-50%);
+    font-size: 14px;
+    background-color: inherit;
+    border: none;
+    padding: 16px 16px 8px 16px;
+  }
+  > .tab-bar {
+    display: flex;
+    align-items: center;
+
+    > .tab-bar-item {
+      padding: 16px 16px 8px 16px;
+      font-size: 22px;
+
+      &.selected {
+        border-bottom: 2px solid #333;
+      }
+    }
+
   }
 }
 .tags {
@@ -161,8 +190,7 @@ header{
   justify-content: center;
   align-items: center;
   margin-top: 50px;
-}
-button{
+  button{
     height: 40px;
     cursor: pointer;
     width: 80%;
@@ -175,11 +203,15 @@ button{
     color: #fff;
     font-weight: 700;
     border-radius: 20px;
-  >span{
-    padding: 0 15px;
-    font-size: 14px;
+    >span{
+      padding: 0 15px;
+      font-size: 14px;
+    }
   }
 }
+
+
+
 
 
 
