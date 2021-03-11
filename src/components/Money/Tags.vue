@@ -46,6 +46,10 @@ export default {
       income: store.income
     }
   },
+  created(){
+    this.$store.commit('fetchTag')
+
+  },
   methods: {
     toggle(tag) {
       const index = this.selectedTag.indexOf(tag);

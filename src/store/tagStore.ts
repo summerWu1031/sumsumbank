@@ -1,50 +1,52 @@
 import createId from '@/lib/createId';
-
-const tagListModel: tagListModel = {
-    data:[],
-    income:[],
-    fetch() {
-        this.data= JSON.parse(window.localStorage.getItem('payment') || '[]');
+const tagSore = {
+    payment:[] as Tag[],
+    income: [] as Tag[],
+    fetchTag() {
+        this.payment= JSON.parse(window.localStorage.getItem('payment') || '[]');
         this.income= JSON.parse(window.localStorage.getItem('income') || '[]');
         return {
-            payment: this.data,
+            payment: this.payment,
             income: this.income
         }
     },
-
-    create(name,icon,type){
+    saveTag(type: string) {
+        if(type === '-'){
+            window.localStorage.setItem('payment', JSON.stringify(this.payment));
+        }else if(type ==='+'){
+            window.localStorage.setItem('income',JSON.stringify(this.income))
+        }
+    },
+    createTag(name: string,icon: string,type: string){
         if(type==='-'){
-            const names = this.data.map(item => item.name)
+            const names = this.payment.map(item => item.name)
             const id = createId().toString()
             if(names.indexOf(name)>=0){return 'duplicated'}
-            this.data.push({id:id, name:name,icon:icon})
-            this.save('-')
+            this.payment.push({id:id, name:name,icon:icon})
+            this.saveTag('-')
             return 'success'
         }else if(type==='+'){
             const names = this.income.map(item => item.name)
             const id = createId().toString()
             if(names.indexOf(name)>=0){return 'duplicated'}
             this.income.push({id:id, name:name,icon:icon})
-            this.save('+')
+            this.saveTag('+')
             return 'success'
         }else {
             return 'failed'
         }
-
-
-
     },
-    remove(id: string, type: string){
+    removeTag(id: string, type: string){
         if(type==='-'){
             let payIndex = -1
-            for(let i=0;i<this.data.length;i++){
-                if(this.data[i].id===id){
+            for(let i=0;i<this.payment.length;i++){
+                if(this.payment[i].id===id){
                     payIndex=i;
                     break
                 }
             }
-            this.data.splice(payIndex,1)
-            this.save('-')
+            this.payment.splice(payIndex,1)
+            this.saveTag('-')
             return true
         }else if(type=== '+'){
             let incomeIndex = -1
@@ -55,23 +57,12 @@ const tagListModel: tagListModel = {
                 }
             }
             this.income.splice(incomeIndex,1)
-            this.save('+')
+            this.saveTag('+')
             return true
         }else {
             return false
         }
-
-
     },
-    save(type) {
-        if(type === '-'){
-            window.localStorage.setItem('payment', JSON.stringify(this.data));
-        }else if(type ==='+'){
-            window.localStorage.setItem('income',JSON.stringify(this.income))
-        }
-
-
-    },
-};
-
-export default tagListModel;
+}
+tagSore.fetchTag()
+export default tagSore

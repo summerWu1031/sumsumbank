@@ -17,28 +17,38 @@ import Tags from '@/components/Money/Tags.vue';
 import Notes from '@/components/Money/Notes.vue';
 import NumberPad from '@/components/Money/NumberPad.vue';
 import {Component} from 'vue-property-decorator';
-import store from '@/store/index2';
+
 
 
 @Component({
   components:{NumberPad,  Notes, Tags, Type},
+  // computed:{
+  //   recordList(){
+  //     return this.$store.state.recordList
+  //   }
+  // }
 })
 
 export default class Money extends Vue{
-  payment = store.payment
-  income = store.income
-  recordList= store.recordList
+  // payment = store.payment
+  // income = store.income
+
   record: RecordItem={
     tags:['餐饮'],notes:'',type:'-',amount:0
    };
+  created(){
+    this.$store.commit('fetchRecord')
+
+  }
    onUpdateNotes(notes: string){
      this.record.notes=notes
    }
   onUpdateTags(tag: string[]){
     this.record.tags=tag
   }
+
   saveRecord(){
-    store.createRecord(this.record)
+    this.$store.commit('createRecord',this.record)
   }
 
 }

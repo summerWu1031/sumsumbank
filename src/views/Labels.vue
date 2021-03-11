@@ -14,7 +14,7 @@
         <span > > </span>
       </router-link>
       <ol v-if="this.type==='-'" >
-        <li v-for="tag in tags" :key="tag.id" class="detail">
+        <li v-for="tag in payment" :key="tag.id" class="detail">
           <div class="iconWrapper">
             <Icon :name="tag.icon" class="icon-item"/>
             <span>{{ tag.name }}</span>
@@ -49,23 +49,36 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import store from '@/store/index2';
 
 
 
 
-@Component
+
+@Component({
+  computed:{
+    payment(){
+      return this.$store.state.paymentTag
+    },
+    income(){
+      return this.$store.state.incomeTag
+    }
+  }
+})
 export default class Labels extends Vue{
-  tags = store.payment
-  income = store.income
+
+
   type = '-'
+
+  beforeCreate(){
+    this.$store.commit('fetchTag')
+  }
   selectedType(type: string){
     this.type=type
   }
 
 
   remove(tagId: string){
-    store.removeTag(tagId,this.type)
+    this.$store.commit('removeTag',{id:tagId,type: this.type})
   }
 }
 </script>
