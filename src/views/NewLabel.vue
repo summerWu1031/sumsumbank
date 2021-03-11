@@ -49,6 +49,7 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Notes from '@/components/Money/Notes.vue';
 import Type from '@/components/Money/Type.vue';
+import store from '@/store/index2';
 
 
 
@@ -78,7 +79,7 @@ export default class NewLabel extends Vue {
       const name =this.value
       const icon = this.selectedTag[0]
       if(name&&icon){
-        const message = window.createTag(name,icon,this.type)
+        const message = store.createTag(name,icon,this.type)
         if (message === 'duplicated'){
           window.alert('标签名已存在')
         }else if(message==='success'){

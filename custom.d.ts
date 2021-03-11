@@ -20,8 +20,11 @@ type tagListModel={
     save: (type: string) => void;
 }
 
-interface Window {
-    tagList: { payment: Tag[]; income: Tag[]};
-    removeTag: (id: string, type: string) => boolean;
-    createTag: (name: string,icon: string,type: string) => 'success' | 'duplicated' | 'failed';
-}
+// interface Window //暴露给window,作为window的属性出现{
+    // tagList: { payment: Tag[]; income: Tag[]};
+    // removeTag: (id: string, type: string) => boolean;
+    // createTag: (name: string,icon: string,type: string) => 'success' | 'duplicated' | 'failed';
+    //
+    // recordList: RecordItem[];
+    // createRecord: (record: RecordItem) => void;
+// }

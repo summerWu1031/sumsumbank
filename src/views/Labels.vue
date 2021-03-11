@@ -49,14 +49,15 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
+import store from '@/store/index2';
 
 
 
 
 @Component
 export default class Labels extends Vue{
-  tags = window.tagList.payment
-  income = window.tagList.income
+  tags = store.payment
+  income = store.income
   type = '-'
   selectedType(type: string){
     this.type=type
@@ -64,7 +65,7 @@ export default class Labels extends Vue{
 
 
   remove(tagId: string){
-    window.removeTag(tagId,this.type)
+    store.removeTag(tagId,this.type)
   }
 }
 </script>

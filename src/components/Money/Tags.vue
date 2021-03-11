@@ -1,17 +1,11 @@
 <template>
   <div class="tags">
     <ul class="current" v-if="this.type==='-'">
-      <li v-for="tag in payment" :key="tag.id" @click="toggle(tag)" >
+      <li v-for="tag in this.payment" :key="tag.id" @click="toggle(tag)" >
         <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
          <Icon  :name="tag.icon"/>
         </div>
         <span>{{tag.name}}</span>
-      </li>
-      <li v-for="tag in newTags" :key="tag" @click="toggle(tag)" >
-        <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
-          {{tag.substring(0,1)}}
-        </div>
-        <span>{{tag}}</span>
       </li>
       <li >
         <router-link to="/newlabel" class="icon-item">
@@ -27,12 +21,6 @@
         </div>
         <span>{{tag.name}}</span>
       </li>
-      <li v-for="tag in newTags" :key="tag" @click="toggle(tag)" >
-        <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
-          {{tag.substring(0,1)}}
-        </div>
-        <span>{{tag}}</span>
-      </li>
       <li >
         <router-link to="/newlabel" class="icon-item">
           <Icon name="新增"/>
@@ -44,14 +32,18 @@
 </template>
 
 <script >
-const newTags = JSON.parse(window.localStorage.getItem('newTags') || '[]')
+import store from "@/store/index2";
+
+
 export default {
   name: 'Tags',
-  props:['payment','income','selected','type'],
+  props:['selected','type'],
+
   data(){
     return{
       selectedTag:this.selected,
-      newTags:newTags
+      payment: store.payment,
+      income: store.income
     }
   },
   methods: {
