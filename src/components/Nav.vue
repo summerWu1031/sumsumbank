@@ -1,6 +1,6 @@
 <template>
   <nav  class="tab">
-      <router-link class="item" active-class="selected"   to="/money">
+      <router-link class="item" active-class="selected"   to="/money" >
             <Icon   name="money"/>
           记账
       </router-link>

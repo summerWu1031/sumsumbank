@@ -3,8 +3,8 @@
     <div class="layoutWrapper">
       <div class="type">
         <ul class="tab-bar" >
-          <li class="tab-bar-item" :class="type==='-' && 'selected'" @click="selectedType('-')">支出 </li>
-          <li class="tab-bar-item" :class="type==='+' && 'selected'" @click="selectedType('+')"> 收入</li>
+          <li class="tab-bar-item" :class="this.record.type==='-' && 'selected'" @click="selectedType('-')">支出 </li>
+          <li class="tab-bar-item" :class="this.record.type==='+' && 'selected'" @click="selectedType('+')"> 收入</li>
         </ul>
         <div>
           <button class="cancel" @click="goback">取消</button>
@@ -12,10 +12,10 @@
       </div>
 
       <main>
-       <Notes field-name="标签：" placeholder="请输入标签名" :value="value" @update:xxx="onUpdateNotes"/>
+       <Notes field-name="标签：" :placeholder.sync="this.palcehodler" :value="value" @update:xxx="onUpdateNotes"/>
         <div class="tags">
           <span>图标:</span>
-          <ul class="current" v-if="this.type==='-'">
+          <ul class="current" v-if="this.record.type==='-'">
             <li v-for="tag in paymentIcon" :key="tag" @click="selected(tag)" >
               <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}" >
                 <Icon  :name="tag"/>
@@ -54,15 +54,18 @@ import Type from '@/components/Money/Type.vue';
 
 
 @Component({
-  components: {Type, Notes}
+  components: {Type, Notes},
 })
 export default class NewLabel extends Vue {
   paymentIcon: string[] = ['租房', '礼物', '狗','猫','衣服','化妆品','酒水','药品','水电']
   incomeIcon: string[]=['红包','理财','兼职','工资','钱包','收入']
   selectedTag: string[]=[]
-
+  palcehodler ='请输入标签名'
   value = ''
-  type='-';
+
+  get record(){
+    return  this.$store.state.record
+  }
   selected(tag: string) {
     const index = this.selectedTag.indexOf(tag);
     if (this.selectedTag.length === 0) {
@@ -79,14 +82,14 @@ export default class NewLabel extends Vue {
       const name =this.value
       const icon = this.selectedTag[0]
       if(name&&icon){
-        this.$store.commit('createTag',{name:name,icon:icon,type:this.type})
+        this.$store.commit('createTag',{name:name,icon:icon,type:this.record.type})
 
       }else {
         window.alert('请输入标签名和选择标签图案')
       }
     }
   selectedType(type: string){
-    this.type=type
+    this.record.type=type
   }
   goback(){
     this.$router.back();

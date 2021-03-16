@@ -1,16 +1,24 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import clone from '@/lib/clone';
-import createId from '@/lib/createId';
+import {createId, createRecordId} from '@/lib/createId';
+import dayjs from 'dayjs';
 
-Vue.use(Vuex) // 把 store 绑到 Vue.prototype.$store = store
+
+
+ // 把 store 绑到 Vue.prototype.$store = store
+Vue.use(Vuex)
 
 const store= new Vuex.Store({
+
   state: {
     recordList:[] as RecordItem[],
     paymentTag:[] as Tag[],
     incomeTag: [] as Tag[],
-  },
+    record: {
+      tags: [{}] ,notes:'',type:'-',amount:0
+    } as RecordItem
+  } as RootState,
   mutations: {
     fetchRecord(state){
       state.recordList=JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[]
@@ -21,7 +29,10 @@ const store= new Vuex.Store({
     },
     createRecord(state, record: RecordItem) {
       const record2 =clone(record)//深拷贝
-      record2.createAt = new Date()
+      record2.createAt = dayjs().format('YYYY-MM-DD')
+      console.log(record2.createAt);
+      record2.id = createRecordId().toString()
+      console.log(record2.createAt);
       state.recordList.push(record2)
       store.commit('saveRecord')
     },

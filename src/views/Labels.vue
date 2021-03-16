@@ -1,13 +1,6 @@
 <template>
   <layout >
-    <div class="header">
-      <div class="type">
-        <ul class="tab-bar" >
-          <li class="tab-bar-item" :class="type==='-' && 'selected'" @click="selectedType('-')">支出 </li>
-          <li class="tab-bar-item" :class="type==='+' && 'selected'" @click="selectedType('+')"> 收入</li>
-        </ul>
-      </div>
-    </div>
+    <Tabs :data-source="typeList" :value.sync="type"/>
     <div class="main">
       <router-link to="/newlabel" class="detail">
         <span class="add">追加新的标签</span>
@@ -49,25 +42,27 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-
-
-
-
+import Tabs from '@/components/Tabs.vue';
+import typeList from '@/constance/typeList';
 
 @Component({
+  components: {Tabs},
   computed:{
     payment(){
       return this.$store.state.paymentTag
     },
     income(){
       return this.$store.state.incomeTag
-    }
+    },
   }
+
 })
 export default class Labels extends Vue{
-
-
-  type = '-'
+ typeList = typeList
+  get record(){
+    return  this.$store.state.record
+  }
+ type = this.record.type
 
   beforeCreate(){
     this.$store.commit('fetchTag')

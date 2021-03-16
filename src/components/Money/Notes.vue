@@ -24,6 +24,7 @@ export default class Notes extends Vue {
   // @Watch('value')
   onValueChange(value: string){
     this.$emit('update:xxx',value)
+    this.placeholder=''
   }
 }
 </script>

@@ -1,4 +1,5 @@
 import clone from '@/lib/clone';
+import dayjs from 'dayjs';
 const recordSore = {
     recordList: []as RecordItem[],
     saveRecord(){
@@ -10,7 +11,7 @@ const recordSore = {
     },
     createRecord(record: RecordItem) {
         const record2 =clone(record)//深拷贝
-        record2.createAt = new Date()
+        record2.createAt = dayjs().toISOString()
         this.recordList.push(record2)
         this.saveRecord()
     },

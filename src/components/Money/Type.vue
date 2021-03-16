@@ -4,7 +4,7 @@
       <li class="tab-bar-item" :class="type==='-' && 'selected'" @click="selectedType('-')">支出 </li>
       <li class="tab-bar-item" :class="type==='+' && 'selected'" @click="selectedType('+')"> 收入</li>
     </ul>
-    <router-link  to="/statistics">
+    <router-link to="/statistics" @click.native="flash">
       <button class="cancel">取消</button>
     </router-link>
   </div>
@@ -24,6 +24,12 @@ export default class Type extends Vue{
     }
     this.$emit('update:type',type)
   }
+
+
+    flash(){
+    this.$router.go(0)
+  }
+
 
 }
 // export default {

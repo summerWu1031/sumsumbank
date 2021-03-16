@@ -1,9 +1,10 @@
 type RecordItem = {
-    tags: string[];
+    tags: Tag[];
     notes: string;
     type: string;
     amount: number;
-    createAt?: Date;
+    createAt: string;
+    id: string;
 }
 type Tag = {
     id: string;
@@ -19,7 +20,12 @@ type tagListModel={
     remove: (id: string, type: string) => boolean;
     save: (type: string) => void;
 }
-
+type RootState={
+    recordList: RecordItem[];
+    paymentTag: Tag[];
+    incomeTag:  Tag[];
+    record: RecordItem;
+}
 // interface Window //暴露给window,作为window的属性出现{
     // tagList: { payment: Tag[]; income: Tag[]};
     // removeTag: (id: string, type: string) => boolean;

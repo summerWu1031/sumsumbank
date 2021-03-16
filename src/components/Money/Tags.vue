@@ -1,7 +1,13 @@
 <template>
   <div class="tags">
     <ul class="current" v-if="this.type==='-'">
-      <li v-for="tag in this.payment" :key="tag.id" @click="toggle(tag)" >
+      <li v-for="tag in this.fixPayTag" :key="tag.icon" @click="toggle(tag)">
+        <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
+          <Icon  :name="tag.icon"/>
+        </div>
+        <span>{{tag.name}}</span>
+      </li>
+      <li v-for="tag in payment" :key="tag.id" @click="toggle(tag)" >
         <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
          <Icon  :name="tag.icon"/>
         </div>
@@ -15,6 +21,12 @@
       </li>
     </ul>
     <ul class="current" v-else>
+      <li v-for="tag in this.fixIncomeTag" :key="tag.icon" @click="toggle(tag)">
+        <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
+          <Icon  :name="tag.icon"/>
+        </div>
+        <span>{{tag.name}}</span>
+      </li>
       <li v-for="tag in income" :key="tag.id" @click="toggle(tag)" >
         <div class="icon-item" :class="{selected:selectedTag.indexOf(tag)>=0}">
           <Icon  :name="tag.icon"/>
@@ -41,14 +53,33 @@ export default {
 
   data(){
     return{
-      selectedTag:this.selected,
-      payment: store.payment,
-      income: store.income
+      selectedTag:[],
+      fixPayTag:[
+        {name:'餐饮', icon:'餐饮'},
+        {name:'水果', icon:'水果'},
+        {name:'零食', icon:'零食'},
+        {name:'娱乐', icon:'娱乐'},
+        {name:'购物', icon:'购物'},
+        {name:'交通', icon:'交通'},
+     ],
+      fixIncomeTag:[
+        {name:'兼职', icon:'兼职'},
+        {name:'理财', icon:'理财'},
+        {name:'工资', icon:'工资'},
+        {name:'红包', icon:'红包'},
+      ]
     }
   },
-  created(){
+  computed:{
+    payment(){
+      return this.$store.state.paymentTag
+    },
+    income(){
+      return this.$store.state.incomeTag
+    },
+  },
+  beforeCreate(){
     this.$store.commit('fetchTag')
-
   },
   methods: {
     toggle(tag) {
@@ -59,6 +90,7 @@ export default {
         this.selectedTag.splice(index, 1);
         this.selectedTag.push(tag)
       }
+
       this.$emit('update:tags', this.selectedTag)
     },
   }

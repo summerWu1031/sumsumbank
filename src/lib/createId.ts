@@ -1,7 +1,7 @@
 
 
 let id: number = parseInt(window.localStorage.getItem('_idMax') || '0') || 0;
-
+let recordId: number =parseInt(window.localStorage.getItem('recordIdMax') || '0') || 0;
 
 
 function createId(){
@@ -10,4 +10,9 @@ function createId(){
     return id
 }
 
-export default createId
+function createRecordId(){
+    recordId++
+    window.localStorage.setItem('recordIdMax',JSON.stringify(recordId))
+    return recordId
+}
+export {createId , createRecordId}
