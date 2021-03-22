@@ -25,12 +25,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
+import {Component} from 'vue-property-decorator';
 
 @Component
 export default class Type extends Vue{
-  @Prop() readonly value!: number
-  output =this.value.toString()
+  // @Prop()  value!: number
+  output ='0'
   finish = '完成';
   xxx: string[]=[];
   inputContent(e: MouseEvent){
@@ -127,6 +127,7 @@ export default class Type extends Vue{
         this.output='0'
         this.$emit('update:value',amount)
         this.$emit('submit',amount)
+        this.$emit('button')
       }else {
         alert('请输入数值')
       }

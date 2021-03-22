@@ -35,6 +35,7 @@ const store= new Vuex.Store({
       console.log(record2.createAt);
       state.recordList.push(record2)
       store.commit('saveRecord')
+      window.alert('已保存')
     },
     fetchTag(state) {
       state.paymentTag= JSON.parse(window.localStorage.getItem('payment') || '[]');
@@ -62,6 +63,7 @@ const store= new Vuex.Store({
         state.paymentTag.push({id:id, name:x.name,icon:x.icon})
         store.commit('saveTag','-')
         window.alert('添加成功');
+
         return 'success'
       }else if(x.type==='+'){
         const names = state.incomeTag.map(item => item.name)

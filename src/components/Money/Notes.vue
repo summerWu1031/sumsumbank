@@ -5,9 +5,11 @@
     </span>
     <span class="name">{{ this.fieldName }}</span>
     <input type="text" class="beizhu"
-           :value="value"
+            :value="value"
            :placeholder="this.placeholder"
-           @input="onValueChange($event.target.value)">
+           @input="onValueChange($event.target.value)"
+
+           >
   </label>
 </template>
 
@@ -23,9 +25,9 @@ export default class Notes extends Vue {
 
   // @Watch('value')
   onValueChange(value: string){
-    this.$emit('update:xxx',value)
-    this.placeholder=''
+    this.$emit('update:value',value)
   }
+
 }
 </script>
 

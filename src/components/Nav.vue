@@ -1,6 +1,6 @@
 <template>
   <nav  class="tab">
-      <router-link class="item" active-class="selected"   to="/money" >
+      <router-link class="item" active-class="selected"   to="/money"  >
             <Icon   name="money"/>
           记账
       </router-link>
@@ -18,13 +18,21 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
 import Icon from '@/components/Icon.vue';
 
-export default {
-  name: 'Nav',
-  components: {Icon},
 
-};
+@Component({
+  components:{Icon},
+})
+export default class Nav extends Vue {
+
+
+
+
+
+}
 </script>
 
 <style lang="scss" scoped>

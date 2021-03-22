@@ -2,10 +2,11 @@
   <layout content-class="tagsGrow" >
     <Type :type.sync="record.type" />
     <Tags  @update:tags="onUpdateTags" :selected.sync="record.tags" :type="record.type"/>
-    <Notes @update:xxx="onUpdateNotes"
-      field-name="备注:"
-      placeholder="请输入备注"/>
-    <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
+    <Notes
+           :value.sync="record.notes"
+            field-name="备注:"
+      placeholder='请输入备注'/>
+    <NumberPad @button="record.notes=''" @submit="saveRecord" @update:value="onUpdateAmount"/>
   </layout>
 </template>
 
@@ -16,21 +17,10 @@ import Tags from '@/components/Money/Tags.vue';
 import Notes from '@/components/Money/Notes.vue';
 import NumberPad from '@/components/Money/NumberPad.vue';
 import {Component} from 'vue-property-decorator';
-
-
-
 @Component({
   components:{NumberPad,  Notes, Tags, Type},
-
 })
-
 export default class Money extends Vue{
-  // payment = store.payment
-  // income = store.income
-
-  // record: RecordItem={
-  //   tags:['餐饮'],notes:'',type:'-',amount:0
-  //  };
  get record(){
    return  this.$store.state.record
  }
@@ -38,15 +28,20 @@ export default class Money extends Vue{
     this.$store.commit('fetchRecord')
 
   }
-   onUpdateNotes(notes: string){
-     this.record.notes=notes
-   }
+
   onUpdateTags(tag: Tag[]){
     this.record.tags=tag
   }
+  onUpdateAmount(amount: string){
+   this.record.amount = amount
+  }
 
   saveRecord(){
+   if(!this.record.tags[0].name){
+    return   window.alert('请选择标签')
+   }
     this.$store.commit('createRecord',this.record)
+    this.record.tags=[{}]
   }
 
 }

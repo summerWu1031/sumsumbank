@@ -12,7 +12,7 @@
       </div>
 
       <main>
-       <Notes field-name="标签：" :placeholder.sync="this.palcehodler" :value="value" @update:xxx="onUpdateNotes"/>
+       <Notes field-name="标签：" :placeholder="this.palcehodler" :value.sync="value" @update:xxx="onUpdateNotes"/>
         <div class="tags">
           <span>图标:</span>
           <ul class="current" v-if="this.record.type==='-'">
@@ -31,7 +31,7 @@
           </ul>
         </div>
       </main>
-      <div class="buttonWrapper">
+      <div class="buttonWrapper" >
         <button @click="createTag">
           <span>确 认</span>
         </button>
@@ -87,6 +87,7 @@ export default class NewLabel extends Vue {
       }else {
         window.alert('请输入标签名和选择标签图案')
       }
+      this.value=''
     }
   selectedType(type: string){
     this.record.type=type
@@ -94,6 +95,7 @@ export default class NewLabel extends Vue {
   goback(){
     this.$router.back();
   }
+
 }
 </script>
 

@@ -1,8 +1,8 @@
 <template>
   <layout>
     <Tabs :data-source="typeList" :value.sync="type" class-prefix="type"/>
-    <ol>
-      <li v-for="group in groupList" :key="group.title">
+    <ol v-if="groupList.length>0">
+      <li  v-for="group in groupList" :key="group.title">
         <h3 class="title">
           {{ timeDay(group.title) }}
           <span>total:￥{{total(group.item)}}</span>
@@ -23,6 +23,9 @@
         </ol>
       </li>
     </ol>
+    <div v-else class="noResult">
+      目前没有相关记录
+    </div>
     <template v-slot:footer >
       <Nav />
     </template>
@@ -87,8 +90,9 @@ export default class Statistics extends Vue {
   }
   get groupList() {
     const {recordList} = this;
-    if (recordList.length === 0) {return [];}
 
+
+    if(recordList.filter(i=>i.type===this.type).length===0){return []}
     const newRecordList = clone(recordList).filter(i=>i.type===this.type).sort((a,b)=>dayjs(b.createAt).valueOf()-dayjs(a.createAt).valueOf())
 
     const result = [{title: dayjs(newRecordList[0].createAt).format('YYYY-MM-DD'),item:[newRecordList[0]]}]
@@ -169,4 +173,8 @@ export default class Statistics extends Vue {
      }
    }
  }
+.noResult{
+  padding: 16px;
+  text-align: center;
+}
 </style>

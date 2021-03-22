@@ -9,6 +9,7 @@ import EditLabel from '@/views/EditLabel.vue';
 import NewLabel from '@/views/NewLabel.vue';
 
 
+
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
