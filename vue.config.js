@@ -4,7 +4,10 @@ module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
       ? '/sumsumbank-website/'
       : '/',
-
+  transpileDependencies: [
+    'vue-echarts',
+    'resize-detector'
+  ],
   lintOnSave: false,
   chainWebpack: config => {
     const dir = path.resolve(__dirname,'src/assets/icons')

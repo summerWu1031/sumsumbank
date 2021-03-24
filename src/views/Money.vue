@@ -2,10 +2,21 @@
   <layout content-class="tagsGrow" >
     <Type :type.sync="record.type" />
     <Tags  @update:tags="onUpdateTags" :selected.sync="record.tags" :type="record.type"/>
-    <Notes
-           :value.sync="record.notes"
-            field-name="备注:"
-      placeholder='请输入备注'/>
+    <div class="xxx">
+      <Notes field-name="日期"
+             placeholder="请选择日期"
+             :value.sync="record.createAt"
+             type="date"
+             class-prefix="time"
+      />
+      <Notes
+          :value.sync="record.notes"
+          field-name="备注:"
+          placeholder='请输入备注'
+          type="text"
+          class-prefix="notes"
+      />
+    </div>
     <NumberPad @button="record.notes=''" @submit="saveRecord" @update:value="onUpdateAmount"/>
   </layout>
 </template>
@@ -42,14 +53,28 @@ export default class Money extends Vue{
    }
     this.$store.commit('createRecord',this.record)
     this.record.tags=[{}]
+    this.record.createAt= new Date()
   }
 
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" >
  .tagsGrow{
    display: flex;
    flex-direction: column;
  }
+  .xxx{
+    display: flex;
+    justify-content: space-between;
+    >.notes{
+      width: 50%;
+    }
+
+  }
+
+
+</style>
+<style lang="scss" scoped>
+
 </style>

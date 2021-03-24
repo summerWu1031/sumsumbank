@@ -1,6 +1,7 @@
 <template>
   <layout>
     <Tabs :data-source="typeList" :value.sync="type" class-prefix="type"/>
+    <ECharts :options="x" />
     <ol v-if="groupList.length>0">
       <li  v-for="group in groupList" :key="group.title">
         <h3 class="title">
@@ -45,8 +46,19 @@ import dayjs from 'dayjs';
 import clone from '@/lib/clone';
 
 
+// import ECharts from 'vue-echarts'
+const ECharts = require('vue-echarts').default
+// import 'echarts/lib/chart/line'
+// import 'echarts/lib/component/polar'
+// import 'echarts/lib/chart/bar'
+// import 'echarts/lib/component/tooltip'
+console.log(ECharts);
+
+
+
+
 @Component({
-  components: {Tabs, Type}
+  components: {Tabs, Type,ECharts}
 })
 export default class Statistics extends Vue {
   type = '-'
@@ -88,6 +100,26 @@ export default class Statistics extends Vue {
       }
     return sum
   }
+
+ get x(){
+    return {
+
+      xAxis: {
+        type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [{
+        data: [150, 230, 224, 218, 135, 147, 260],
+        type: 'line'
+      }]
+    }
+
+  }
+
+
   get groupList() {
     const {recordList} = this;
 
@@ -108,6 +140,7 @@ export default class Statistics extends Vue {
     }
     return result
   }
+
 
 }
 </script>
@@ -176,5 +209,9 @@ export default class Statistics extends Vue {
 .noResult{
   padding: 16px;
   text-align: center;
+}
+.echarts {
+  width: 100%;
+  height: 400px;
 }
 </style>

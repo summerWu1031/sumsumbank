@@ -10,6 +10,7 @@ import NewLabel from '@/views/NewLabel.vue';
 
 
 
+
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -37,6 +38,7 @@ const routes: Array<RouteConfig> = [
         path:'/statistics',
         component:Statistics
     },
+
     {
         path:'*',
         component:NotFound

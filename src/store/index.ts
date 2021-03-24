@@ -16,7 +16,7 @@ const store= new Vuex.Store({
     paymentTag:[] as Tag[],
     incomeTag: [] as Tag[],
     record: {
-      tags: [{}] ,notes:'',type:'-',amount:0
+      tags: [{}] ,notes:'',type:'-',amount:0,createAt: new Date().toISOString()
     } as RecordItem
   } as RootState,
   mutations: {
@@ -29,10 +29,7 @@ const store= new Vuex.Store({
     },
     createRecord(state, record: RecordItem) {
       const record2 =clone(record)//深拷贝
-      record2.createAt = dayjs().format('YYYY-MM-DD')
-      console.log(record2.createAt);
-      record2.id = createRecordId().toString()
-      console.log(record2.createAt);
+      record2.createAt =record2.createAt || dayjs().format('YYYY-MM-DD')
       state.recordList.push(record2)
       store.commit('saveRecord')
       window.alert('已保存')

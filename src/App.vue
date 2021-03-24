@@ -7,6 +7,7 @@
 
 <style lang="scss">
 @import "~@/assets/style/helper.scss";
+
 *{
   padding: 0;
   margin: 0;
@@ -27,5 +28,7 @@ ul,ol{
   color: #333;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  max-width: 500px;
+  margin: 0 auto;
 }
 </style>
